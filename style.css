@@ -1,0 +1,52 @@
+body {
+  background-color: snow;
+  margin: 0px;
+}
+
+div.bodybox {
+	padding: 3% 10% 0% 10%;
+}
+
+div.titlebox {
+	background-color: lightcyan;
+	padding: 2% 0% 2% 0%;
+	text-align: center;
+}
+
+div.links {
+	width: 200px;
+	float: left;
+	margin: 0px 5% 0px 0px;
+}
+
+div.clickable {
+	border-style: solid;
+	border-width: medium;
+	border-radius: 5px;
+	padding: 10px 0px 10px 0px;
+	margin: 10px 10px 10px 10px;
+	text-align: center;
+}
+
+a.bald:visited {
+	color: black;
+	text-decoration: none;
+}
+
+a.bald:link {
+	color: black;
+	text-decoration: none;
+}
+
+div.clickable:hover {
+	background-color: black;
+	color: white;
+}
+
+div.urhere {
+	background-color: lightgray;
+}
+
+div.myinfo{
+	float: right;
+}
