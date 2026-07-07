@@ -78,12 +78,14 @@ div.myinfo{
 	float: right;
 	margin: 0px 0px 0px 5%;
 	width: 200px;
-	height: 100%
+	height: 100%;
 }
 
 div.maincontent{
 	width: 100%;
 	float: center;
+	line-height: 140%;
+	text-align: justify;
 }
 
 #headshot {
@@ -99,4 +101,27 @@ div.maincontent{
 	padding: 20px 0px 0px 0px;
 	width: 180px;
 	line-height: 200%
+}
+
+@media screen and (max-width:1000px) {
+  div.links{
+    height:250px
+  }
+}
+
+@media screen and (max-width:800px) {
+  div.myinfo{
+    height:350px
+  }
+  
+  div.empty{
+    height:0px
+  }
+}
+
+@media screen and (max-width:600px) {
+	div.bodybox {
+		padding: 3% 5% 0% 5%;
+		height: 75%;
+	}
 }
