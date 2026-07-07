@@ -10,7 +10,6 @@ body {
 
 div.bodybox {
 	padding: 3% 10% 0% 10%;
-	height: 75%;
 }
 
 div.titlebox {
@@ -26,12 +25,14 @@ div.titlebox {
 
 div.links {
 	width: 200px;
+	height: 250px;
 	float: left;
 	margin: 0px 5% 0px 0px;
 	height: 100%;
 }
 
 div.clickable {
+	width: 175px;
 	border-style: solid;
 	border-width: medium;
 	border-radius: 5px;
@@ -78,11 +79,10 @@ div.myinfo{
 	float: right;
 	margin: 0px 0px 0px 5%;
 	width: 200px;
-	height: 100%;
+	height: 350px;
 }
 
 div.maincontent{
-	width: 100%;
 	float: center;
 	line-height: 140%;
 	text-align: justify;
@@ -103,22 +103,39 @@ div.maincontent{
 	line-height: 200%
 }
 
-@media screen and (max-width:1000px) {
-  div.links{
-    height:250px
-  }
-  div.myinfo{
-    height:350px
-  }
-  
-  div.empty{
-    height:0px
-  }
-}
-
-@media screen and (max-width:600px) {
+@media screen and not (max-width:1000px) {
 	div.bodybox {
-		padding: 3% 5% 0% 5%;
-		height: 75%;
+		display: flex;
+		flex-direction: row;
+	}
+	
+	div.links {
+		order: 1;
+		flex-grow: 0;
+		flex-shrink: 0;
+	}
+	
+	div.maincontent {
+		order: 2;
+	}
+	
+	div.myinfo {
+		order: 3;
+		flex-grow: 0;
+		flex-shrink: 0;
 	}
 }
+
+@media screen and (max-width:1000px) {
+	div.empty{
+		height: 0px;
+		width: 0px;
+	}
+}
+
+@media screen and (max-width:800px) {
+	div.bodybox {
+		padding: 3% 5% 0% 5%;
+	}
+}
+
