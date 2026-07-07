@@ -8,9 +8,14 @@ div.bodybox {
 }
 
 div.titlebox {
-	background-color: lightcyan;
 	padding: 2% 0% 2% 0%;
 	text-align: center;
+	background-colour: lightgreen;
+	background-image: url("images/head.jpg");
+	background-size: contain;
+	background-repeat:repeat-x;
+	background-position: center;
+	text-shadow: -3px 0 5px white, 0 3px 5px white, 3px 0 5px white, 0 -3px 5px white, -3px 3px 5px white, 3px 3px 5px white, -3px -3px 5px white, 3px -3px 5px white;
 }
 
 div.links {
@@ -43,10 +48,46 @@ div.clickable:hover {
 	color: white;
 }
 
+a.secrethref:link {
+	color: black;
+	text-decoration: none;
+}
+
+a.secrethref:visited {
+	color: black;
+	text-decoration: none;
+}
+
+a.secrethref:hover {
+	color: black;
+	text-decoration: underline;
+}
+
 div.urhere {
 	background-color: lightgray;
 }
 
 div.myinfo{
 	float: right;
+	margin: 0px 0px 0px 5%;
+	width: 200px;
+}
+
+div.maincontent{
+	width: 100%;
+	float: center;
+}
+
+#headshot {
+	width: 200px;
+	height: 200px;
+	border-style: solid;
+}
+
+#listolinks {
+	margin-left: auto;
+	margin-right: auto;
+	padding: 20px 0px 0px 0px;
+	width: 180px;
+	line-height: 200%
 }
