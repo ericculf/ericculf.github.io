@@ -107,9 +107,6 @@ div.maincontent{
   div.links{
     height:250px
   }
-}
-
-@media screen and (max-width:800px) {
   div.myinfo{
     height:350px
   }
