@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>CHSH example</title>
+	<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+	<div style="width:100%;height:99.5%;line-height:140%;text-align:justify;">
+		<div style="float:left;width:80%;height:100%;margin:0px 20px 0px 0px;">
+			<canvas id="cnv" width="1000" height="1000" style="border-right:1px solid #000000;"></canvas>
+		</div>
+		<div style="padding: 20px 20px 20px 20px">
+			<b> Play the CHSH game </b>
+			<br>
+			<br>
+			Alice and Bob are asked bits <i>x</i> and <i>y</i>, respectively, and are asked to respond with bits <i>a</i> and <i>b</i> satisfying
+			<br><br>
+			<center><i>a</i> ⊕ <i>b</i> = <i>xy</i></center>
+			<br>
+			If each player's output is a classical function of their input with no communication, they can only win with probability 0.75. However, if the players share quantum entanglement, they can win with probability cos<sup>2</sup>(π/8) ≈ 0.8535 without communicating.<br><br>
+			Control the players' measurements, visualised on a cross-section of the Bloch sphere, on a maximally entangled state of a single qubit and see how close you can get to the optimal winning probability.
+			<br>
+			<br>
+			<div>ω = <span id="winvalue">0</span></div>
+		</div>
+	</div>
+</canvas>
+</body>
+<script>
+	var c = document.getElementById("cnv");
+	var ctx = c.getContext("2d");
+	c.width = 0.8*window.innerWidth;
+	c.height = 0.995*window.innerHeight;
+	size=Math.min(c.width,c.height);
+	a0angle=Math.PI/2;
+	a1angle=Math.PI/2;
+	b0angle=Math.PI/2;
+	b1angle=Math.PI/2;
+	a0toggle=false;
+	a1toggle=false;
+	b0toggle=false;
+	b1toggle=false;
+	
+	w=document.getElementById("winvalue");
+	w.innerHTML=wvalue().toString().substring(0,6);
+	
+	function redraw() {
+		ctx.clearRect(0, 0, c.width, c.height);
+		ctx.strokeStyle = "red";
+		ctx.lineWidth = 3;
+		ctx.beginPath();
+		ctx.moveTo(c.width/2-size/4-(size/6-5)*Math.cos(a0angle), c.height/2-size/4+(size/6-5)*Math.sin(a0angle));
+		ctx.lineTo(c.width/2-size/4+(size/6-5)*Math.cos(a0angle), c.height/2-size/4-(size/6-5)*Math.sin(a0angle));
+		ctx.moveTo(c.width/2-size/4+(size/6-5)*Math.cos(a0angle)+30*Math.cos(3*Math.PI/4+a0angle), c.height/2-size/4-(size/6-5)*Math.sin(a0angle)-30*Math.sin(3*Math.PI/4+a0angle));
+		ctx.lineTo(c.width/2-size/4+(size/6-5)*Math.cos(a0angle), c.height/2-size/4-(size/6-5)*Math.sin(a0angle));
+		ctx.lineTo(c.width/2-size/4+(size/6-5)*Math.cos(a0angle)+30*Math.cos(5*Math.PI/4+a0angle), c.height/2-size/4-(size/6-5)*Math.sin(a0angle)-30*Math.sin(5*Math.PI/4+a0angle));
+		ctx.moveTo(c.width/2-size/4-(size/6-5)*Math.cos(a1angle), c.height/2+size/4+(size/6-5)*Math.sin(a1angle));
+		ctx.lineTo(c.width/2-size/4+(size/6-5)*Math.cos(a1angle), c.height/2+size/4-(size/6-5)*Math.sin(a1angle));
+		ctx.moveTo(c.width/2-size/4+(size/6-5)*Math.cos(a1angle)+30*Math.cos(3*Math.PI/4+a1angle), c.height/2+size/4-(size/6-5)*Math.sin(a1angle)-30*Math.sin(3*Math.PI/4+a1angle));
+		ctx.lineTo(c.width/2-size/4+(size/6-5)*Math.cos(a1angle), c.height/2+size/4-(size/6-5)*Math.sin(a1angle));
+		ctx.lineTo(c.width/2-size/4+(size/6-5)*Math.cos(a1angle)+30*Math.cos(5*Math.PI/4+a1angle), c.height/2+size/4-(size/6-5)*Math.sin(a1angle)-30*Math.sin(5*Math.PI/4+a1angle));
+		
+		
+		ctx.moveTo(c.width/2+size/4-(size/6-5)*Math.cos(b0angle), c.height/2-size/4+(size/6-5)*Math.sin(b0angle));
+		ctx.lineTo(c.width/2+size/4+(size/6-5)*Math.cos(b0angle), c.height/2-size/4-(size/6-5)*Math.sin(b0angle));
+		ctx.moveTo(c.width/2+size/4+(size/6-5)*Math.cos(b0angle)+30*Math.cos(3*Math.PI/4+b0angle), c.height/2-size/4-(size/6-5)*Math.sin(b0angle)-30*Math.sin(3*Math.PI/4+b0angle));
+		ctx.lineTo(c.width/2+size/4+(size/6-5)*Math.cos(b0angle), c.height/2-size/4-(size/6-5)*Math.sin(b0angle));
+		ctx.lineTo(c.width/2+size/4+(size/6-5)*Math.cos(b0angle)+30*Math.cos(5*Math.PI/4+b0angle), c.height/2-size/4-(size/6-5)*Math.sin(b0angle)-30*Math.sin(5*Math.PI/4+b0angle));
+		ctx.moveTo(c.width/2+size/4-(size/6-5)*Math.cos(b1angle), c.height/2+size/4+(size/6-5)*Math.sin(b1angle));
+		ctx.lineTo(c.width/2+size/4+(size/6-5)*Math.cos(b1angle), c.height/2+size/4-(size/6-5)*Math.sin(b1angle));
+		ctx.moveTo(c.width/2+size/4+(size/6-5)*Math.cos(b1angle)+30*Math.cos(3*Math.PI/4+b1angle), c.height/2+size/4-(size/6-5)*Math.sin(b1angle)-30*Math.sin(3*Math.PI/4+b1angle));
+		ctx.lineTo(c.width/2+size/4+(size/6-5)*Math.cos(b1angle), c.height/2+size/4-(size/6-5)*Math.sin(b1angle));
+		ctx.lineTo(c.width/2+size/4+(size/6-5)*Math.cos(b1angle)+30*Math.cos(5*Math.PI/4+b1angle), c.height/2+size/4-(size/6-5)*Math.sin(b1angle)-30*Math.sin(5*Math.PI/4+b1angle));
+		ctx.stroke();
+		
+		ctx.strokeStyle = "black";
+		ctx.fillStyle = "black";
+		ctx.beginPath();
+		ctx.arc(c.width/2-size/4, c.height/2-size/4, size/6, 0, 2 * Math.PI);
+		ctx.stroke();
+		ctx.beginPath();
+		ctx.arc(c.width/2-size/4, c.height/2+size/4, size/6, 0, 2 * Math.PI);
+		ctx.stroke();
+		ctx.beginPath();
+		ctx.arc(c.width/2+size/4, c.height/2-size/4, size/6, 0, 2 * Math.PI);
+		ctx.stroke();
+		ctx.beginPath();
+		ctx.arc(c.width/2+size/4, c.height/2+size/4, size/6, 0, 2 * Math.PI);
+		ctx.stroke();
+		
+		ctx.beginPath();
+		ctx.arc(c.width/2+size/4, c.height/2+size/4, 30, 0, 2 * Math.PI);
+		ctx.fill();
+		ctx.beginPath();
+		ctx.arc(c.width/2+size/4, c.height/2-size/4, 30, 0, 2 * Math.PI);
+		ctx.fill();
+		ctx.beginPath();
+		ctx.arc(c.width/2-size/4, c.height/2+size/4, 30, 0, 2 * Math.PI);
+		ctx.fill();
+		ctx.beginPath();
+		ctx.arc(c.width/2-size/4, c.height/2-size/4, 30, 0, 2 * Math.PI);
+		ctx.fill();
+		
+		ctx.font = "24px Times";
+		ctx.textBaseline = "middle";
+		ctx.textAlign = "center";
+		ctx.fillText("|0⟩",c.width/2-size/4, c.height/2-size/4-size/6-20);
+		ctx.fillText("|1⟩",c.width/2-size/4, c.height/2-size/4+size/6+20);
+		ctx.fillText("|+⟩",c.width/2-size/4+size/6+20, c.height/2-size/4);
+		ctx.fillText("|–⟩",c.width/2-size/4-size/6-20, c.height/2-size/4);
+		ctx.fillText("|0⟩",c.width/2-size/4, c.height/2+size/4-size/6-20);
+		ctx.fillText("|1⟩",c.width/2-size/4, c.height/2+size/4+size/6+20);
+		ctx.fillText("|+⟩",c.width/2-size/4+size/6+20, c.height/2+size/4);
+		ctx.fillText("|–⟩",c.width/2-size/4-size/6-20, c.height/2+size/4);
+		ctx.fillText("|0⟩",c.width/2+size/4, c.height/2-size/4-size/6-20);
+		ctx.fillText("|1⟩",c.width/2+size/4, c.height/2-size/4+size/6+20);
+		ctx.fillText("|+⟩",c.width/2+size/4+size/6+20, c.height/2-size/4);
+		ctx.fillText("|–⟩",c.width/2+size/4-size/6-20, c.height/2-size/4);
+		ctx.fillText("|0⟩",c.width/2+size/4, c.height/2+size/4-size/6-20);
+		ctx.fillText("|1⟩",c.width/2+size/4, c.height/2+size/4+size/6+20);
+		ctx.fillText("|+⟩",c.width/2+size/4+size/6+20, c.height/2+size/4);
+		ctx.fillText("|–⟩",c.width/2+size/4-size/6-20, c.height/2+size/4);
+		ctx.font = "italic 24px Times";
+		ctx.fillStyle = "white";
+		ctx.fillText("A₀", c.width/2-size/4, c.height/2-size/4);
+		ctx.fillText("A₁", c.width/2-size/4, c.height/2+size/4);
+		ctx.fillText("B₀", c.width/2+size/4, c.height/2-size/4);
+		ctx.fillText("B₁", c.width/2+size/4, c.height/2+size/4);
+	}
+	
+	function wvalue() {
+		return (Math.cos((a0angle-b0angle)/2)**2+Math.cos((a0angle-b1angle)/2)**2+Math.cos((a1angle-b0angle)/2)**2+Math.sin((a1angle-b1angle)/2)**2)/4;
+	}
+	
+	function mousedown(e) {
+		
+		if ((e.pageX-c.width/2+size/4)**2+(e.pageY-c.height/2+size/4)**2<=(size*size/36)) {
+			a0toggle = true;
+		}
+		
+		if ((e.pageX-c.width/2+size/4)**2+(e.pageY-c.height/2-size/4)**2<=(size*size/36)) {
+			a1toggle = true;
+		}
+		
+		if ((e.pageX-c.width/2-size/4)**2+(e.pageY-c.height/2+size/4)**2<=(size*size/36)) {
+			b0toggle = true;
+		}
+		if ((e.pageX-c.width/2-size/4)**2+(e.pageY-c.height/2-size/4)**2<=(size*size/36)) {
+			b1toggle = true;
+		}
+	}
+	
+	function mousemove(e) {
+		if (b1toggle==true) {
+			b1angle = Math.atan2(-(e.pageY-c.height/2-size/4),e.pageX-c.width/2-size/4);
+		} else if (a0toggle==true) {
+			a0angle = Math.atan2(-(e.pageY-c.height/2+size/4),e.pageX-c.width/2+size/4);
+		} else if (a1toggle==true) {
+			a1angle = Math.atan2(-(e.pageY-c.height/2-size/4),e.pageX-c.width/2+size/4);
+		} else if (b0toggle==true) {
+			b0angle = Math.atan2(-(e.pageY-c.height/2+size/4),e.pageX-c.width/2-size/4);
+		}
+		w.innerHTML=wvalue().toString().substring(0,6);
+		redraw();
+	}
+	
+	function mouseup(e) {
+		a0toggle=false;
+		a1toggle=false;
+		b0toggle=false;
+		b1toggle=false;
+		w.innerHTML=wvalue().toString().substring(0,6);
+		redraw();
+	}
+	
+	c.addEventListener("mousedown",mousedown);
+	c.addEventListener("mousemove",mousemove);
+	c.addEventListener("mouseup",mouseup);
+	
+	redraw()
+	
+</script>
+</html>

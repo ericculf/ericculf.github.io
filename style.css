@@ -8,6 +8,10 @@ body {
   height: 100%;
 }
 
+li {
+  margin: 10px 0;
+}
+
 div.bodybox {
 	padding: 3% 10% 0% 10%;
 }
