@@ -21,7 +21,8 @@
 			Control the players' measurements, visualised on a cross-section of the Bloch sphere, on a maximally entangled state of a single qubit and see how close you can get to the optimal winning probability.
 			<br>
 			<br>
-			<div>ω = <span id="winvalue">0</span></div>
+			<br>
+			<div style="font-size:2rem;"><center >ω = <span id="winvalue">0</span></center></div>
 			
 			<div style="position:fixed;right:5px;bottom:5px"><a class="bald" href="about.html"><div class="clickable">Back</div></a></div>
 		</div>
@@ -43,7 +44,7 @@
 	b1toggle=false;
 	
 	w=document.getElementById("winvalue");
-	w.innerHTML=wvalue().toString().substring(0,6);
+	w.innerHTML=(wvalue().toString()+"00").substring(0,6);
 	
 	function redraw() {
 		ctx.clearRect(0, 0, c.width, c.height);
@@ -161,7 +162,7 @@
 		} else if (b0toggle==true) {
 			b0angle = Math.atan2(-(e.pageY-c.height/2+size/4),e.pageX-c.width/2-size/4);
 		}
-		w.innerHTML=wvalue().toString().substring(0,6);
+		w.innerHTML=(wvalue().toString()+"00").substring(0,6);
 		redraw();
 	}
 	
@@ -170,7 +171,7 @@
 		a1toggle=false;
 		b0toggle=false;
 		b1toggle=false;
-		w.innerHTML=wvalue().toString().substring(0,6);
+		w.innerHTML=(wvalue().toString()+"00").substring(0,6);
 		redraw();
 	}
 	
